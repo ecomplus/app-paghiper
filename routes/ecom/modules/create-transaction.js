@@ -15,11 +15,20 @@ module.exports = appSdk => {
     getConfig({ appSdk, storeId }, true)
 
       .then(config => {
-        // treat create transaction module request body
-        // https://apx-mods.e-com.plus/api/v1/create_transaction/schema.json?store_id=100
         // setup transaction body to PagHiper reference
-        const paghiperTransaction = parseTransactionBody(body)
         // https://dev.paghiper.com/reference#gerar-boleto
+        const paghiperTransaction = parseTransactionBody(body)
+        const options = config.banking_billet_options
+        if (typeof options === 'object' && options !== null) {
+          // merge configured options
+          // options must have only valid properties for PagHiper transaction object
+          for (let prop in options) {
+            if (options.hasOwnProperty(prop) && options[prop] !== null) {
+              paghiperTransaction[prop] = options[prop]
+            }
+          }
+        }
+        // send request to PagHiper API
         return createTransaction(config.paghiper_api_key, paghiperTransaction)
       })
 
