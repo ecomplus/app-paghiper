@@ -5,8 +5,9 @@ const getConfig = require(process.cwd() + '/lib/store-api/get-config')
 // generate default payment gateway object
 const newPaymentGateway = require(process.cwd() + '/lib/new-payment-gateway')
 
-module.exports = (appSdk, storeId) => {
+module.exports = appSdk => {
   return (req, res) => {
+    const { storeId, body } = req
     // get app configured options
     getConfig({ appSdk, storeId })
 
@@ -14,7 +15,7 @@ module.exports = (appSdk, storeId) => {
         // treat list payments module request body and mount response
         // https://apx-mods.e-com.plus/api/v1/list_payments/schema.json?store_id=100
         // https://apx-mods.e-com.plus/api/v1/list_payments/response_schema.json?store_id=100
-        let paymentGateway = newPaymentGateway(req.body.lang)
+        let paymentGateway = newPaymentGateway(body.lang)
         // merge cunfigured options to payment gateway object
         ;[ 'label', 'text', 'icon', 'discount' ].forEach(prop => {
           if (config[prop]) {

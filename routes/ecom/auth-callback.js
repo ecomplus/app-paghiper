@@ -3,11 +3,12 @@
 // log on files
 const logger = require('console-files')
 
-module.exports = (appSdk, storeId) => {
+module.exports = appSdk => {
   return (req, res) => {
+    const { storeId, body } = req
     // handle callback with E-Com Plus app SDK
     // https://github.com/ecomclub/ecomplus-app-sdk
-    appSdk.handleCallback(storeId, req.body)
+    appSdk.handleCallback(storeId, body)
 
       .then(({ isNew, authenticationId }) => {
         // authentication tokens were updated
