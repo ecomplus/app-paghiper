@@ -41,8 +41,12 @@ ecomAuth.then(appSdk => {
   const routes = './../routes'
   router.get('/', require(`${routes}/`)())
 
-  // base routes for E-Com Plus Store API
-  ;[ 'auth-callback', 'webhook' ].forEach(endpoint => {
+  // routes for E-Com Plus Store API
+  ;[
+    'auth-callback',
+    'modules/create-transaction',
+    'modules/list-payments'
+  ].forEach(endpoint => {
     let filename = `/ecom/${endpoint}`
     router.post(filename, require(`${routes}${filename}`)(appSdk, storeId))
   })
