@@ -32,11 +32,37 @@ module.exports = appSdk => {
         return createTransaction(config.paghiper_api_key, paghiperTransaction)
       })
 
-      .then(() => {
+      .then(paghiperResponse => {
         // transaction created successfully
+        // https://dev.paghiper.com/reference#exemplos
+        const createRequest = paghiperResponse.create_request
+        const bankSlip = createRequest.bank_slip
+
         // mount response body
         // https://apx-mods.e-com.plus/api/v1/create_transaction/response_schema.json?store_id=100
-        res.send({})
+        const transaction = {
+          payment_link: bankSlip.url_slip,
+          intermediator: {
+            transaction_id: createRequest.transaction_id,
+            transaction_code: createRequest.transaction_id,
+            transaction_reference: createRequest.order_id
+          },
+          banking_billet: {
+            code: bankSlip.digitable_line,
+            link: bankSlip.url_slip_pdf
+          },
+          amount: createRequest.value_cents
+            ? parseInt(createRequest.value_cents, 10) / 100
+            // use amount from create transaction request body
+            : body.amount.total
+        }
+        if (createRequest.due_date) {
+          transaction.banking_billet.valid_thru = new Date(createRequest.due_date).toISOString()
+        }
+
+        // all done
+        // send response and finish process
+        res.send({ transaction })
       })
 
       .catch(err => {
