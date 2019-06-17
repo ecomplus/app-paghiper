@@ -10,6 +10,10 @@ const createTransaction = require(process.cwd() + '/lib/paghiper-api/create-tran
 module.exports = appSdk => {
   return (req, res) => {
     const { storeId, body } = req
+    // treat create transaction module request body
+    // https://apx-mods.e-com.plus/api/v1/create_transaction/schema.json?store_id=100
+    const orderId = body.order_id
+
     // get app configured options
     // including hidden (authenticated) data
     getConfig({ appSdk, storeId }, true)
@@ -29,7 +33,7 @@ module.exports = appSdk => {
           }
         }
         // send request to PagHiper API
-        return createTransaction(config.paghiper_api_key, paghiperTransaction)
+        return createTransaction(paghiperTransaction, storeId, orderId)
       })
 
       .then(paghiperResponse => {
