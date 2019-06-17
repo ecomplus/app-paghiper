@@ -51,7 +51,7 @@ module.exports = appSdk => {
       .then(paghiperResponse => {
         // we have full PagHiper notification object here
         // parse PagHiper status to E-Com Plus financial status
-        const financialStatus = () => {
+        const status = () => {
           const { status } = paghiperResponse.status_request
           switch (paghiperResponse.status_request.status) {
             case 'pending':
@@ -70,8 +70,17 @@ module.exports = appSdk => {
               return 'authorized'
           }
         }
+
         // change transaction status on E-Com Plus API
-        return updatePaymentStatus(sdkClient, orderId, financialStatus)
+        const notificationCode = body.notification_code
+        return updatePaymentStatus(sdkClient, orderId, status, notificationCode)
+      })
+
+      .then(() => {
+        // Store API was changed with current transaction status
+        // all done
+        res.status(204)
+        res.end()
       })
 
       .catch(err => {
