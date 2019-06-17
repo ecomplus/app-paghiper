@@ -39,17 +39,14 @@ ecomAuth.then(appSdk => {
   const routes = './../routes'
   router.get('/', require(`${routes}/`)())
 
-  // routes for E-Com Plus Store API
   ;[
-    'auth-callback',
-    'modules/create-transaction',
-    'modules/list-payments'
-  ].forEach(endpoint => {
-    let filename = `/ecom/${endpoint}`
-    router.post(filename, require(`${routes}${filename}`)(appSdk))
-  })
-
-  /* Add custom app routes here */
+    // routes for E-Com Plus Store API
+    '/ecom/auth-callback',
+    '/ecom/modules/create-transaction',
+    '/ecom/modules/list-payments',
+    // additional routes for PagHiper API
+    '/paghiper/notification'
+  ].forEach(route => router.post(route, require(`${routes}${route}`)(appSdk)))
 
   // add router and start web server
   app.use(router)
