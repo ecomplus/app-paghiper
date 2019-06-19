@@ -10,7 +10,7 @@ Variable              | Value
 `LOGGER_ERRORS`       | `~/app/log/logger.err`
 `LOGGER_FATAL_ERRORS` | `~/app/log/_stderr`
 `PORT`                | `3000`
-`APP_BASE_URI`        | `https://paghiper.ecomplus.biz/api/v1`
+`APP_BASE_URI`        | `https://paghiper.ecomplus.biz`
 `DB_PATH`             | `~/app/db.sqlite`
 `ECOM_AUTH_DB`        | `~/app/db.sqlite`
 `PAGHIPER_PARTNER_ID` | `1234567`
