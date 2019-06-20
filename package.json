@@ -1,8 +1,10 @@
 {
-  "name": "my-app",
+  "name": "@ecomplus/app-paghiper",
   "private": true,
-  "version": "0.0.1",
-  "description": "My awesome E-Com Plus app",
+  "author": "E-Com Club <ti@e-com.club>",
+  "license": "MIT",
+  "version": "0.1.0",
+  "description": "E-Com Plus app to integrate PagHiper",
   "main": "main.js",
   "dependencies": {
     "console-files": "2.x",
