@@ -1,17 +1,166 @@
 {
-  "app_id": 9000,
+  "app_id": 9001,
   "state": "active",
-  "title": "My Awesome E-Com Plus App",
-  "slug": "my-app",
-  "version": "0.0.1",
+  "title": "PagHiper",
+  "slug": "paghiper",
+  "version": "0.1.0",
   "type": "external",
   "authentication": true,
-  "auth_callback_uri": "https://my-app/ecom/auth-callback",
+  "auth_callback_uri": "https://paghiper.ecomplus.biz/ecom/auth-callback",
   "auth_scope": {
-    "procedures": [
+    "orders/payments_history": [
       "POST"
     ]
   },
   "admin_settings": {
+    "label": {
+      "schema": {
+        "type": "string",
+        "maxLength": 50,
+        "title": "Rótulo",
+        "description": "Nome da forma de pagamento exibido para os clientes",
+        "default": "Boleto bancário"
+      },
+      "hide": false
+    },
+    "text": {
+      "schema": {
+        "type": "string",
+        "maxLength": 1000,
+        "title": "Descrição",
+        "description": "Texto auxiliar sobre a forma de pagamento, pode conter tags HTML"
+      },
+      "hide": false
+    },
+    "icon": {
+      "schema": {
+        "type": "string",
+        "maxLength": 255,
+        "format": "uri",
+        "title": "Ícone",
+        "description": "Ícone customizado para a forma de pagamento, URL da imagem"
+      },
+      "hide": false
+    },
+    "discount": {
+      "schema": {
+        "type": "object",
+        "required": [
+          "value"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "apply_at": {
+            "type": "string",
+            "enum": [
+              "total",
+              "subtotal",
+              "freight"
+            ],
+            "default": "subtotal",
+            "title": "Aplicar desconto em",
+            "description": "Em qual valor o desconto deverá ser aplicado no checkout"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "percentage",
+              "fixed"
+            ],
+            "default": "percentage",
+            "title": "Tipo de desconto",
+            "description": "Desconto com valor percentual ou fixo"
+          },
+          "value": {
+            "type": "number",
+            "multipleOf": 0.0001,
+            "minimum": -99999999,
+            "maximum": 99999999,
+            "title": "Valor do desconto",
+            "description": "Valor percentual ou fixo a ser descontado, dependendo to tipo configurado"
+          }
+        },
+        "title": "Desconto",
+        "description": "Desconto a ser aplicado para pagamentos com boleto PagHiper"
+      },
+      "hide": false
+    },
+    "banking_billet_options": {
+      "schema": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "days_due_date": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 999,
+            "title": "Dias corridos até o vencimento",
+            "description": "Representa diferença de dias entre a data da requisição e a data de vencimento",
+            "default": 5
+          },
+          "fixed_description": {
+            "type": "boolean",
+            "default": true,
+            "title": "Frase fixa no boleto",
+            "description": "Mostrar no boleto frase pré-configurada no painel do PagHiper"
+          },
+          "late_payment_fine": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 2,
+            "title": "Percentual da multa",
+            "description": "Percentual da multa por atraso (máximo autorizado pelo CDC é de 2%)"
+          },
+          "per_day_interest": {
+            "type": "boolean",
+            "default": true,
+            "title": "Juros por atraso",
+            "description": "Aplicar 1% de juros máximo ao mês, cobrado proporcionalmente aos dias de atraso"
+          },
+          "early_payment_discounts_cents": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 999999,
+            "title": "Desconto em pagamento antecipado",
+            "description": "Valor do desconto em centavos aplicado caso o pagamento seja antecipado"
+          },
+          "early_payment_discounts_days": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 999,
+            "title": "Dias para desconto por antecipação",
+            "description": "Mínimo de dias de antecedência para aplicar o desconto extra"
+          },
+          "open_after_day_due": {
+            "type": "integer",
+            "minimum": 5,
+            "maximum": 30,
+            "title": "Dias após o vencimento",
+            "description": "Número máximo de dias em que o boleto poderá ser pago após o vencimento"
+          }
+        },
+        "title": "Configurações do boleto bancário",
+        "description": "Opções adicionais para os boletos criados via PagHiper"
+      },
+      "hide": false
+    },
+    "paghiper_api_key": {
+      "schema": {
+        "type": "string",
+        "maxLength": 255,
+        "title": "PagHiper API key",
+        "description": "Chave de API disponível em https://www.paghiper.com/painel/credenciais/"
+      },
+      "hide": true
+    },
+    "paghiper_token": {
+      "schema": {
+        "type": "string",
+        "maxLength": 255,
+        "title": "PagHiper token",
+        "description": "Tokend disponível em https://www.paghiper.com/painel/credenciais/"
+      },
+      "hide": true
+    }
   }
 }
