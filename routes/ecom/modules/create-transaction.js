@@ -22,9 +22,12 @@ module.exports = appSdk => {
         // setup transaction body to PagHiper reference
         // https://dev.paghiper.com/reference#gerar-boleto
         const paghiperTransaction = parseTransactionBody(body)
+
+        // use configured PagHiper API key
+        paghiperTransaction.apiKey = config.paghiper_api_key
+        // merge configured banking billet options
         const options = config.banking_billet_options
         if (typeof options === 'object' && options !== null) {
-          // merge configured options
           // options must have only valid properties for PagHiper transaction object
           for (let prop in options) {
             if (options.hasOwnProperty(prop) && options[prop] !== null) {
@@ -32,6 +35,7 @@ module.exports = appSdk => {
             }
           }
         }
+
         // send request to PagHiper API
         return createTransaction(paghiperTransaction, storeId, orderId)
       })
