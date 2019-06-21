@@ -12,6 +12,14 @@
       "POST"
     ]
   },
+  "modules": {
+    "list_payments": {
+      "endpoint": "https://paghiper.ecomplus.biz/ecom/modules/list-payments"
+    },
+    "create_transaction": {
+      "endpoint": "https://paghiper.ecomplus.biz/ecom/modules/create-transaction"
+    }
+  },
   "admin_settings": {
     "label": {
       "schema": {
