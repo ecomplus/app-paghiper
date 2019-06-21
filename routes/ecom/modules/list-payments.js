@@ -5,21 +5,14 @@ const newPaymentGateway = require(process.cwd() + '/lib/new-payment-gateway')
 
 module.exports = appSdk => {
   return (req, res) => {
-    const { body } = req
-    if (!body) {
-      return res.sendStatus(400)
-    }
-
+    // body was already pre-validated on @/bin/web.js
     // treat module request body
-    const { params, application } = body
-    if (!params || !application) {
-      return res.sendStatus(400)
-    }
+    const { params, application } = req.body
     // app configured options
     const config = Object.assign({}, application.data, application.hidden_data)
     if (!config.paghiper_api_key) {
       // must have configured PagHiper API key and token
-      return res.status(406).send({
+      return res.status(400).send({
         error: 'LIST_PAYMENTS_ERR',
         message: 'PagHiper API key is unset on app hidden data (merchant must configure the app)'
       })
