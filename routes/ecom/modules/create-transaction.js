@@ -1,7 +1,5 @@
 'use strict'
 
-// read configured E-Com Plus app data
-const getConfig = require(process.cwd() + '/lib/store-api/get-config')
 // parse craete transaction body from Mods API to PagHiper model
 const parseTransactionBody = require(process.cwd() + '/lib/parse-transaction-body')
 // create new transaction to PagHiper API
@@ -10,35 +8,34 @@ const createTransaction = require(process.cwd() + '/lib/paghiper-api/create-tran
 module.exports = appSdk => {
   return (req, res) => {
     const { storeId, body } = req
-    // treat create transaction module request body
+    // body was already pre-validated on @/bin/web.js
+    // treat module request body
+    const { params, application } = body
+    // app configured options
+    const config = Object.assign({}, application.data, application.hidden_data)
+
+    // params object follows create transaction request schema:
     // https://apx-mods.e-com.plus/api/v1/create_transaction/schema.json?store_id=100
-    const orderId = body.order_id
+    const orderId = params.order_id
+    // setup transaction body to PagHiper reference
+    // https://dev.paghiper.com/reference#gerar-boleto
+    const paghiperTransaction = parseTransactionBody(params)
 
-    // get app configured options
-    // including hidden (authenticated) data
-    getConfig({ appSdk, storeId }, true)
-
-      .then(config => {
-        // setup transaction body to PagHiper reference
-        // https://dev.paghiper.com/reference#gerar-boleto
-        const paghiperTransaction = parseTransactionBody(body)
-
-        // use configured PagHiper API key
-        paghiperTransaction.apiKey = config.paghiper_api_key
-        // merge configured banking billet options
-        const options = config.banking_billet_options
-        if (typeof options === 'object' && options !== null) {
-          // options must have only valid properties for PagHiper transaction object
-          for (let prop in options) {
-            if (options.hasOwnProperty(prop) && options[prop] !== null) {
-              paghiperTransaction[prop] = options[prop]
-            }
-          }
+    // use configured PagHiper API key
+    paghiperTransaction.apiKey = config.paghiper_api_key
+    // merge configured banking billet options
+    const options = config.banking_billet_options
+    if (typeof options === 'object' && options !== null) {
+      // options must have only valid properties for PagHiper transaction object
+      for (let prop in options) {
+        if (options.hasOwnProperty(prop) && options[prop] !== null) {
+          paghiperTransaction[prop] = options[prop]
         }
+      }
+    }
 
-        // send request to PagHiper API
-        return createTransaction(paghiperTransaction, storeId, orderId)
-      })
+    // send request to PagHiper API
+    createTransaction(paghiperTransaction, storeId, orderId)
 
       .then(paghiperResponse => {
         // transaction created successfully
@@ -62,7 +59,7 @@ module.exports = appSdk => {
           amount: createRequest.value_cents
             ? parseInt(createRequest.value_cents, 10) / 100
             // use amount from create transaction request body
-            : body.amount.total
+            : params.amount.total
         }
         if (createRequest.due_date) {
           transaction.banking_billet.valid_thru = new Date(createRequest.due_date).toISOString()
