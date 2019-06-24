@@ -86,11 +86,11 @@ module.exports = appSdk => {
 
         // list order IDs for respective transaction code
         return listOrdersByTransaction(sdkClient, transactionCode, intermediator.code)
-          .then(listOrdersResponse => {
+          .then(orders => {
             // change transaction status on E-Com Plus API
             const notificationCode = body.notification_id
             const promises = []
-            listOrdersResponse.result.forEach(order => {
+            orders.forEach(order => {
               promises.push(updatePaymentStatus(sdkClient, order._id, status, notificationCode))
             })
             return Promise.all(promises)
