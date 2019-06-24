@@ -32,7 +32,7 @@ module.exports = appSdk => {
 
       .then(data => {
         storeId = data.storeId
-        logger.log(storeId)
+        // logger.log(storeId)
         // pre-authenticate to reuse auth object
         return appSdk.getAuth(storeId)
       })
@@ -46,7 +46,6 @@ module.exports = appSdk => {
 
       .then(config => {
         const token = config.paghiper_token
-        logger.log(token)
         if (token && config.paghiper_api_key === body.apiKey) {
           // read full notification body from PagHiper API
           return readNotification(Object.assign({}, body, { token }))
@@ -84,8 +83,6 @@ module.exports = appSdk => {
             // ignore unknow status
             return true
         }
-        logger.log(status)
-        logger.log(sdkClient)
 
         // list order IDs for respective transaction code
         return listOrdersByTransaction(sdkClient, transactionCode, intermediator.code)
@@ -94,7 +91,6 @@ module.exports = appSdk => {
             const notificationCode = body.notification_id
             const promises = []
             listOrdersResponse.result.forEach(order => {
-              logger.log(order._id)
               promises.push(updatePaymentStatus(sdkClient, order._id, status, notificationCode))
             })
             return Promise.all(promises)
@@ -109,7 +105,10 @@ module.exports = appSdk => {
       })
 
       .catch(err => {
-        logger.error(err)
+        if (!err.request) {
+          // not Axios error ?
+          logger.error(err)
+        }
         // return response with error
         res.status(500)
         let { message } = err
