@@ -13,6 +13,7 @@ Variable              | Value
 `APP_BASE_URI`        | `https://paghiper.ecomplus.biz`
 `DB_PATH`             | `~/app/db.sqlite`
 `ECOM_AUTH_DB`        | `~/app/db.sqlite`
+`ECOM_AUTH_UPDATE`    | `enabled`
 `PAGHIPER_PARTNER_ID` | `1234567`
 
 ## Production server
