@@ -51,24 +51,26 @@ module.exports = appSdk => {
       .then(paghiperResponse => {
         // we have full PagHiper notification object here
         // parse PagHiper status to E-Com Plus financial status
-        const status = () => {
-          const { status } = paghiperResponse.status_request
-          switch (paghiperResponse.status_request.status) {
-            case 'pending':
-            case 'paid':
-            case 'refunded':
-              // is the same
-              return status
-            case 'completed':
-              return 'paid'
-            case 'canceled':
-              return 'voided'
-            case 'processing':
-              return 'under_analysis'
-            case 'reserved':
-              // https://atendimento.paghiper.com/hc/pt-br/articles/360016177713
-              return 'authorized'
-          }
+        let { status } = paghiperResponse.status_request
+        switch (paghiperResponse.status_request.status) {
+          case 'pending':
+          case 'paid':
+          case 'refunded':
+            // is the same
+            break
+          case 'completed':
+            status = 'paid'
+            break
+          case 'canceled':
+            status = 'voided'
+            break
+          case 'processing':
+            status = 'under_analysis'
+            break
+          case 'reserved':
+            // https://atendimento.paghiper.com/hc/pt-br/articles/360016177713
+            status = 'authorized'
+            break
         }
 
         // change transaction status on E-Com Plus API
