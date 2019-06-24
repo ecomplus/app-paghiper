@@ -85,6 +85,7 @@ module.exports = appSdk => {
             return true
         }
         logger.log(status)
+        logger.log(sdkClient)
 
         // list order IDs for respective transaction code
         return listOrdersByTransaction(sdkClient, transactionCode, intermediator.code)
