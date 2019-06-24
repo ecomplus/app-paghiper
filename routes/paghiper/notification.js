@@ -6,8 +6,12 @@ const { get } = require(process.cwd() + '/lib/database')
 const getConfig = require(process.cwd() + '/lib/store-api/get-config')
 // update order transaction status on Store API
 const updatePaymentStatus = require(process.cwd() + '/lib/store-api/update-payment-status')
+// list orders from E-Com Plus Store API searching by transaction code
+const listOrdersByTransaction = require(process.cwd() + '/lib/store-api/list-orders-by-transaction')
 // read full notification body from PagHiper API
 const readNotification = require(process.cwd() + '/lib/paghiper-api/read-notification')
+// get intermediator object from payment gateway object
+const { intermediator } = require(process.cwd() + '/lib/new-payment-gateway')
 
 module.exports = appSdk => {
   return (req, res) => {
@@ -20,13 +24,12 @@ module.exports = appSdk => {
     }
 
     // declare reusable Store API authentication object and Store ID
-    let sdkClient, storeId, orderId
+    let sdkClient, storeId
     // get Store ID first
     get(transactionCode)
 
       .then(data => {
         storeId = data.storeId
-        orderId = data.orderId
         // pre-authenticate to reuse auth object
         return appSdk.getAuth(storeId)
       })
@@ -78,9 +81,17 @@ module.exports = appSdk => {
             return true
         }
 
-        // change transaction status on E-Com Plus API
-        const notificationCode = body.notification_code
-        return updatePaymentStatus(sdkClient, orderId, status, notificationCode)
+        // list order IDs for respective transaction code
+        return listOrdersByTransaction(sdkClient, transactionCode, intermediator.code)
+          .then(listOrdersResponse => {
+            // change transaction status on E-Com Plus API
+            const notificationCode = body.notification_id
+            const promises = []
+            listOrdersResponse.result.forEach(order => {
+              promises.push(updatePaymentStatus(sdkClient, order._id, status, notificationCode))
+            })
+            return Promise.all(promises)
+          })
       })
 
       .then(() => {
