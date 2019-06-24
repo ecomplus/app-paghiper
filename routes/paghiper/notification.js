@@ -52,12 +52,13 @@ module.exports = appSdk => {
         // we have full PagHiper notification object here
         // parse PagHiper status to E-Com Plus financial status
         let { status } = paghiperResponse.status_request
-        switch (paghiperResponse.status_request.status) {
+        switch (status) {
           case 'pending':
           case 'paid':
           case 'refunded':
             // is the same
             break
+
           case 'completed':
             status = 'paid'
             break
@@ -71,6 +72,10 @@ module.exports = appSdk => {
             // https://atendimento.paghiper.com/hc/pt-br/articles/360016177713
             status = 'authorized'
             break
+
+          default:
+            // ignore unknow status
+            return true
         }
 
         // change transaction status on E-Com Plus API
