@@ -41,7 +41,7 @@ module.exports = appSdk => {
 
     if (paymentGateway.discount) {
       // default discount option
-      let { type, value } = paymentGateway
+      let { type, value } = paymentGateway.discount
       let label = config.discount_option_label || paymentGateway.label
       response.discount_option = { label, value }
       // specify the discount type is optional
