@@ -109,6 +109,7 @@ module.exports = appSdk => {
       })
 
       .catch(err => {
+        logger.error(err)
         // return response with error
         res.status(500)
         let { message } = err
