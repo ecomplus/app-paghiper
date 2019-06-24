@@ -13,7 +13,7 @@ const listOrdersByTransaction = require(process.cwd() + '/lib/store-api/list-ord
 // read full notification body from PagHiper API
 const readNotification = require(process.cwd() + '/lib/paghiper-api/read-notification')
 // get intermediator object from payment gateway object
-const { intermediator } = require(process.cwd() + '/lib/new-payment-gateway')
+const { intermediator } = require(process.cwd() + '/lib/new-payment-gateway')()
 
 module.exports = appSdk => {
   return (req, res) => {
