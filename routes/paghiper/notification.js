@@ -15,6 +15,8 @@ const readNotification = require(process.cwd() + '/lib/paghiper-api/read-notific
 // get intermediator object from payment gateway object
 const { intermediator } = require(process.cwd() + '/lib/new-payment-gateway')()
 
+const CLIENT_ERR = 'invalidClient'
+
 module.exports = appSdk => {
   return (req, res) => {
     const { body } = req
@@ -50,7 +52,9 @@ module.exports = appSdk => {
           // read full notification body from PagHiper API
           return readNotification(Object.assign({}, body, { token }))
         } else {
-          throw new Error('API key does not match')
+          let err = new Error('API key does not match')
+          err.name = CLIENT_ERR
+          throw err
         }
       })
 
@@ -105,7 +109,7 @@ module.exports = appSdk => {
       })
 
       .catch(err => {
-        if (!err.request) {
+        if (!err.request && err.name !== CLIENT_ERR) {
           // not Axios error ?
           logger.error(err)
         }
