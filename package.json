@@ -6,6 +6,10 @@
   "version": "0.7.1",
   "description": "E-Com Plus app to integrate PagHiper",
   "main": "main.js",
+  "scripts": {
+    "test": "node ./main.js",
+    "release": "standard-version"
+  },
   "dependencies": {
     "console-files": "2.x",
     "ecomplus-app-sdk": "1.x",
@@ -17,6 +21,7 @@
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "husky": "^2.4.1",
-    "standard": "^12.0.1"
+    "standard": "^12.0.1",
+    "standard-version": "^7.0.0"
   }
 }
