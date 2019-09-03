@@ -39,14 +39,28 @@ module.exports = appSdk => {
       payment_gateways: [ paymentGateway ]
     }
 
-    if (paymentGateway.discount) {
-      // default discount option
-      let { type, value } = paymentGateway.discount
-      let label = config.discount_option_label || paymentGateway.label
-      response.discount_option = { label, value }
-      // specify the discount type is optional
-      if (type) {
-        response.discount_option.type = type
+    const { discount } = paymentGateway
+    if (discount) {
+      if (discount.apply_at !== 'freight') {
+        // default discount option
+        const { value } = discount
+        const label = config.discount_option_label || paymentGateway.label
+        response.discount_option = { label, value }
+        // specify the discount type and min amount is optional
+        ;[ 'type', 'min_amount' ].forEach(prop => {
+          if (discount[prop]) {
+            response.discount_option[prop] = discount[prop]
+          }
+        })
+      }
+
+      if (discount.hasOwnProperty('min_amount')) {
+        // check amount value to apply discount
+        if (params.amount && params.amount.total < discount.min_amount) {
+          delete paymentGateway.discount
+        } else {
+          delete discount.min_amount
+        }
       }
     }
 
