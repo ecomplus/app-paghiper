@@ -52,7 +52,7 @@ module.exports = appSdk => {
           // read full notification body from PagHiper API
           return readNotification(Object.assign({}, body, { token }))
         } else {
-          let err = new Error('API key does not match')
+          const err = new Error('API key does not match')
           err.name = CLIENT_ERR
           throw err
         }
@@ -69,9 +69,6 @@ module.exports = appSdk => {
             // is the same
             break
 
-          case 'completed':
-            status = 'paid'
-            break
           case 'canceled':
             status = 'voided'
             break
@@ -115,7 +112,7 @@ module.exports = appSdk => {
         }
         // return response with error
         res.status(500)
-        let { message } = err
+        const { message } = err
         res.send({
           error: 'paghiper_notification_error',
           message
