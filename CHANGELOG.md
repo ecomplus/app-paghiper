@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.5](https://github.com/ecomplus/app-paghiper/compare/v0.7.4...v0.7.5) (2020-03-06)
+
+
+### Bug Fixes
+
+* **notification:** stop setting paid on completed to prevent duplication ([59bc9ec](https://github.com/ecomplus/app-paghiper/commit/59bc9ec87d39d6c77b9a5a14a082d7dbe0a6dd4e))
+
 ### [0.7.4](https://github.com/ecomclub/app-paghiper/compare/v0.7.3...v0.7.4) (2019-12-19)
 
 
