@@ -1,5 +1,7 @@
 'use strict'
 
+// log on files
+const logger = require('console-files')
 // parse craete transaction body from Mods API to PagHiper model
 const parseTransactionBody = require(process.cwd() + '/lib/parse-transaction-body')
 // create new transaction to PagHiper API
@@ -71,9 +73,24 @@ module.exports = appSdk => {
       })
 
       .catch(err => {
+        const { message } = err
+        let statusCode
+        if (!err.request) {
+          // not Axios error ?
+          logger.error(err)
+          statusCode = 500
+        } else {
+          let debugMsg = `[#${storeId}] Can't create transaction: ${err.request.url} `
+          if (err.response) {
+            debugMsg += `${err.response.status}`
+          } else {
+            debugMsg += message
+          }
+          logger.log(debugMsg)
+          statusCode = 409
+        }
         // return error status code
-        res.status(500)
-        let { message } = err
+        res.status(statusCode)
         res.send({
           error: 'CREATE_TRANSACTION_ERR',
           message
