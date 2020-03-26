@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.1](https://github.com/ecomplus/app-paghiper/compare/v1.0.0...v1.0.1) (2020-03-26)
+
+
+### Bug Fixes
+
+* **error-handling:** prevent returning 500 status, debug with details ([c8b71b5](https://github.com/ecomplus/app-paghiper/commit/c8b71b5b81a1035b7be24235836d86b6ed740cd0))
+
 ## [1.0.0](https://github.com/ecomplus/app-paghiper/compare/v0.7.6...v1.0.0) (2020-03-26)
 
 ### [0.7.6](https://github.com/ecomplus/app-paghiper/compare/v0.7.5...v0.7.6) (2020-03-26)
