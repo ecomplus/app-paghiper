@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.6](https://github.com/ecomplus/app-paghiper/compare/v0.7.5...v0.7.6) (2020-03-26)
+
+
+### Bug Fixes
+
+* **notification-debug:** fix logging unhandled notifications ([af02260](https://github.com/ecomplus/app-paghiper/commit/af02260186a03fac410c5cc8f37230e9d23ad026))
+
 ### [0.7.5](https://github.com/ecomplus/app-paghiper/compare/v0.7.4...v0.7.5) (2020-03-06)
 
 
