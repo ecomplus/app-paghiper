@@ -106,13 +106,15 @@ module.exports = appSdk => {
       })
 
       .catch(err => {
-        if (!err.request && err.name !== CLIENT_ERR) {
+        const { message } = err
+        if (!err.request && err.name !== CLIENT_ERR && err.code !== 'EMPTY') {
           // not Axios error ?
           logger.error(err)
+        } else {
+          logger.log(`Unhandled notification (#${transactionCode}): "${message}"`)
         }
         // return response with error
         res.status(500)
-        const { message } = err
         res.send({
           error: 'paghiper_notification_error',
           message
