@@ -1,0 +1,8 @@
+{
+  "app": {
+    "title": "PagHiper",
+    "short_description": "Pagamento via boleto bancário com PagHiper",
+    "category": "sales",
+    "icon": "https://market.e-com.plus/media/cfmB4rYZbXgx.png"
+  }
+}
