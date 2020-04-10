@@ -175,7 +175,7 @@
         "type": "string",
         "maxLength": 255,
         "title": "PagHiper token",
-        "description": "Tokend disponível em https://www.paghiper.com/painel/credenciais/"
+        "description": "Token da sua conta em https://www.paghiper.com/painel/credenciais/"
       },
       "hide": true
     }
