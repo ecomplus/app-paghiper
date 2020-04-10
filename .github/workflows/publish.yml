@@ -25,16 +25,8 @@ jobs:
           node-version: '12.x'
           registry-url: 'https://registry.npmjs.org/'
 
-      - name: Cache dependencies
-        uses: actions/cache@v1
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-node-
-
       - name: Install root dependencies
-        run: npm ci --only=production
+        run: npm i
 
       - name: Run publish script
         env:
