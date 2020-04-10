@@ -1,4 +1,4 @@
-# app-paghiper
+# App PagHiper
 
 E-Com Plus app to integrate PagHiper
 
