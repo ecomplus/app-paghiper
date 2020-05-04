@@ -82,13 +82,21 @@ module.exports = appSdk => {
         } else {
           let debugMsg = `[#${storeId}] Can't create transaction: ${err.request.url} `
           if (err.response) {
-            debugMsg += `${err.response.status}`
+            debugMsg += err.response.status
+            if (err.response.status === 200) {
+              // https://dev.paghiper.com/reference#mensagens-de-retorno-2
+              const { data } = err.response
+              if (data) {
+                debugMsg += ' ' + (typeof data === 'object' ? JSON.stringify(data) : data)
+              }
+            }
           } else {
             debugMsg += message
           }
           logger.log(debugMsg)
           statusCode = 409
         }
+
         // return error status code
         res.status(statusCode)
         res.send({
