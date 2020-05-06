@@ -87,7 +87,9 @@ module.exports = appSdk => {
               // https://dev.paghiper.com/reference#mensagens-de-retorno-2
               const { data } = err.response
               if (data) {
-                debugMsg += ' ' + (typeof data === 'object' ? JSON.stringify(data) : data)
+                debugMsg += ' ' +
+                  (typeof data === 'object' ? JSON.stringify(data) : data) + ' ' +
+                  JSON.stringify(paghiperTransaction)
               }
             }
           } else {
