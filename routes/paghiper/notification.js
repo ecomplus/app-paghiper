@@ -27,107 +27,125 @@ module.exports = appSdk => {
       return res.sendStatus(400)
     }
 
-    // declare reusable Store API authentication object and Store ID
-    let sdkClient, storeId
-    // get Store ID first
-    get(transactionCode)
-
-      .then(data => {
-        storeId = data.storeId
-        // logger.log(storeId)
-        // pre-authenticate to reuse auth object
-        return appSdk.getAuth(storeId)
-      })
-
-      .then(auth => {
-        sdkClient = { appSdk, storeId, auth }
-        // get app configured options
-        // including hidden (authenticated) data
-        return getConfig(sdkClient, true)
-      })
-
-      .then(config => {
-        const token = config.paghiper_token
-        if (token && config.paghiper_api_key === body.apiKey) {
-          // read full notification body from PagHiper API
-          return readNotification(Object.assign({}, body, { token }))
-        } else {
-          const err = new Error('API key does not match')
-          err.name = CLIENT_ERR
-          throw err
-        }
-      })
-
-      .then(paghiperResponse => {
-        // we have full PagHiper notification object here
-        // parse PagHiper status to E-Com Plus financial status
-        let { status } = paghiperResponse.status_request
-        switch (status) {
-          case 'pending':
-          case 'paid':
-          case 'refunded':
-            // is the same
-            break
-
-          case 'canceled':
-            status = 'voided'
-            break
-          case 'processing':
-            status = 'under_analysis'
-            break
-          case 'reserved':
-            // https://atendimento.paghiper.com/hc/pt-br/articles/360016177713
-            status = 'authorized'
-            break
-
-          default:
-            // ignore unknow status
-            return true
-        }
-
-        // list order IDs for respective transaction code
-        return listOrdersByTransaction(sdkClient, transactionCode, intermediator.code)
-          .then(orders => {
-            // change transaction status on E-Com Plus API
-            const notificationCode = body.notification_id
-            const promises = []
-            orders.forEach(order => {
-              promises.push(updatePaymentStatus(sdkClient, order._id, status, notificationCode))
-            })
-            return Promise.all(promises)
-          })
-      })
-
-      .then(() => {
-        // Store API was changed with current transaction status
-        // all done
-        res.status(204)
-        res.end()
-      })
-
-      .catch(err => {
-        const { message } = err
-        let statusCode
-        if (!err.request && err.name !== CLIENT_ERR && err.code !== 'EMPTY') {
-          // not Axios error ?
-          logger.error(err)
-          statusCode = 500
-        } else {
-          let debugMsg = `[#${storeId} / ${transactionCode}] Unhandled notification: ${err.request.url} `
-          if (err.response) {
-            debugMsg += `${err.response.status}`
-          } else {
-            debugMsg += message
-          }
-          logger.log(debugMsg)
-          statusCode = 409
-        }
-        // return response with error
-        res.status(statusCode)
-        res.send({
-          error: 'paghiper_notification_error',
-          message
+    const handleNotification = isRetry => {
+      // declare reusable Store API authentication object and Store ID
+      let sdkClient, storeId
+      // get Store ID first
+      get(transactionCode)
+        .then(data => {
+          storeId = data.storeId
+          // logger.log(storeId)
+          // pre-authenticate to reuse auth object
+          return appSdk.getAuth(storeId)
         })
-      })
+
+        .then(auth => {
+          sdkClient = { appSdk, storeId, auth }
+          // get app configured options
+          // including hidden (authenticated) data
+          return getConfig(sdkClient, true)
+        })
+
+        .then(config => {
+          if (config.paghiper_token && config.paghiper_api_key === body.apiKey) {
+            // list order IDs for respective transaction code
+            return listOrdersByTransaction(sdkClient, transactionCode, intermediator.code)
+              .then(orders => ({ orders, config }))
+          } else {
+            const err = new Error('API key does not match')
+            err.name = CLIENT_ERR
+            throw err
+          }
+        })
+
+        .then(({ orders, config }) => {
+          // read full notification body from PagHiper API
+          return readNotification(Object.assign({}, body, {
+            token: config.paghiper_token
+          }))
+            .then(paghiperResponse => ({ paghiperResponse, orders }))
+        })
+
+        .then(({ paghiperResponse, orders }) => {
+          // we have full PagHiper notification object here
+          // parse PagHiper status to E-Com Plus financial status
+          let { status } = paghiperResponse.status_request
+          switch (status) {
+            case 'pending':
+            case 'paid':
+            case 'refunded':
+              // is the same
+              break
+
+            case 'canceled':
+              status = 'voided'
+              break
+            case 'processing':
+              status = 'under_analysis'
+              break
+            case 'reserved':
+              // https://atendimento.paghiper.com/hc/pt-br/articles/360016177713
+              status = 'authorized'
+              break
+
+            default:
+              // ignore unknow status
+              return true
+          }
+
+          // change transaction status on E-Com Plus API
+          const notificationCode = body.notification_id
+          const promises = []
+          orders.forEach(order => {
+            promises.push(updatePaymentStatus(sdkClient, order._id, status, notificationCode))
+          })
+          return Promise.all(promises)
+        })
+
+        .then(() => {
+          // Store API was changed with current transaction status
+          // all done
+          res.status(204)
+          res.end()
+        })
+
+        .catch(err => {
+          const { message } = err
+          let statusCode
+          if (!err.request && err.name !== CLIENT_ERR && err.code !== 'EMPTY') {
+            // not Axios error ?
+            logger.error(err)
+            statusCode = 500
+          } else {
+            let debugMsg = `[#${storeId} / ${transactionCode}] Unhandled notification: `
+            if (err.config) {
+              debugMsg += `${err.config.url} `
+            }
+            if (err.response) {
+              debugMsg += err.response.status
+            } else {
+              debugMsg += message
+            }
+            logger.log(debugMsg)
+            statusCode = 409
+
+            if (!isRetry && (!err.response || !err.response.status || err.response.status >= 500)) {
+              // delay and retry once
+              setTimeout(() => {
+                handleNotification(true)
+              }, 7000)
+            }
+          }
+
+          // return response with error
+          res.status(statusCode)
+          res.send({
+            error: 'paghiper_notification_error',
+            message
+          })
+        })
+    }
+
+    handleNotification()
   }
 }
