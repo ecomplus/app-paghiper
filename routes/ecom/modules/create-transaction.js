@@ -80,7 +80,10 @@ module.exports = appSdk => {
           logger.error(err)
           statusCode = 500
         } else {
-          let debugMsg = `[#${storeId}] Can't create transaction: ${err.request.url} `
+          let debugMsg = `[#${storeId}] Can't create transaction: `
+          if (err.config) {
+            debugMsg += `${err.config.url} `
+          }
           if (err.response) {
             debugMsg += err.response.status
             if (err.response.status === 200) {
