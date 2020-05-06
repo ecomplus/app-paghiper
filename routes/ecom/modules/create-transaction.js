@@ -19,6 +19,7 @@ module.exports = appSdk => {
     // params object follows create transaction request schema:
     // https://apx-mods.e-com.plus/api/v1/create_transaction/schema.json?store_id=100
     const orderId = params.order_id
+    logger.log(`> Create transaction for #${storeId} ${orderId}`)
     // setup transaction body to PagHiper reference
     // https://dev.paghiper.com/reference#gerar-boleto
     const paghiperTransaction = parseTransactionBody(params)
