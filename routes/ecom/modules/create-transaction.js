@@ -74,7 +74,7 @@ module.exports = appSdk => {
       })
 
       .catch(err => {
-        const { message } = err
+        let { message } = err
         let statusCode
         if (!err.request) {
           // not Axios error ?
@@ -87,13 +87,17 @@ module.exports = appSdk => {
           }
           if (err.response) {
             debugMsg += err.response.status
+
+            // https://dev.paghiper.com/reference#mensagens-de-retorno-2
             if (err.response.status === 200) {
-              // https://dev.paghiper.com/reference#mensagens-de-retorno-2
               const { data } = err.response
               if (data) {
                 debugMsg += ' ' +
                   (typeof data === 'object' ? JSON.stringify(data) : data) + ' ' +
                   JSON.stringify(paghiperTransaction)
+                if (data.create_request && data.create_request.response_message) {
+                  message = data.create_request.response_message
+                }
               }
             }
           } else {
