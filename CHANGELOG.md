@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.6](https://github.com/ecomplus/app-paghiper/compare/v1.0.5...v1.0.6) (2020-05-10)
+
+
+### Bug Fixes
+
+* **create-transaction:** return paghiper error reponse message if any ([6f99c87](https://github.com/ecomplus/app-paghiper/commit/6f99c87dae1792a0a0bdd34346a4b2997ada0d43))
+
 ### [1.0.5](https://github.com/ecomplus/app-paghiper/compare/v1.0.4...v1.0.5) (2020-05-06)
 
 ### [1.0.4](https://github.com/ecomplus/app-paghiper/compare/v1.0.3...v1.0.4) (2020-05-06)
