@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.7](https://github.com/ecomplus/app-paghiper/compare/v1.0.6...v1.0.7) (2020-07-01)
+
+
+### Bug Fixes
+
+* importing @ecomplus/application-sdk ([cc211c3](https://github.com/ecomplus/app-paghiper/commit/cc211c3716ea327e758b6170db973eeb4bcd19ae))
+* **deps:** update deps, migrate to @ecomplus/application-sdk ([d417a14](https://github.com/ecomplus/app-paghiper/commit/d417a1413b988f643c51c9addda76da3205cf71d))
+
 ### [1.0.6](https://github.com/ecomplus/app-paghiper/compare/v1.0.5...v1.0.6) (2020-05-10)
 
 
