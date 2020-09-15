@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/ecomplus/app-paghiper/compare/v1.0.7...v1.1.0) (2020-09-15)
+
+
+### Features
+
+* **list-payments:** optionally set discount non-cumulative ([#3](https://github.com/ecomplus/app-paghiper/issues/3)) ([cdb2799](https://github.com/ecomplus/app-paghiper/commit/cdb27993873264c7809237403d96bf7dee2adf21))
+
 ### [1.0.7](https://github.com/ecomplus/app-paghiper/compare/v1.0.6...v1.0.7) (2020-07-01)
 
 
