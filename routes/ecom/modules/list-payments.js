@@ -8,6 +8,8 @@ module.exports = appSdk => {
     // body was already pre-validated on @/bin/web.js
     // treat module request body
     const { params, application } = req.body
+    const amount = params.amount || {}
+
     // app configured options
     const config = Object.assign({}, application.data, application.hidden_data)
     if (!config.paghiper_api_key) {
@@ -29,11 +31,14 @@ module.exports = appSdk => {
     // https://apx-mods.e-com.plus/api/v1/list_payments/response_schema.json?store_id=100
     let paymentGateway = newPaymentGateway(params.lang)
     // merge cunfigured options to payment gateway object
-    ;[ 'label', 'text', 'icon', 'discount' ].forEach(prop => {
+    ;['label', 'text', 'icon'].forEach(prop => {
       if (config[prop]) {
         paymentGateway[prop] = config[prop]
       }
     })
+    if (config.discount && (!amount.discount || config.cumulative_discount !== false)) {
+      paymentGateway.discount = config.discount
+    }
     // setup response object
     let response = {
       payment_gateways: [ paymentGateway ]
@@ -56,7 +61,7 @@ module.exports = appSdk => {
 
       if (discount.hasOwnProperty('min_amount')) {
         // check amount value to apply discount
-        if (params.amount && params.amount.total < discount.min_amount) {
+        if (amount.total < discount.min_amount) {
           delete paymentGateway.discount
         } else {
           delete discount.min_amount
