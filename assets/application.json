@@ -104,10 +104,13 @@
       "hide": false
     },
     "cumulative_discount": {
-      "type": "boolean",
-      "default": true,
-      "title": "Desconto cumulativo",
-      "description": "Se o desconto no boleto poderá ser aplicado junto a cupons e campanhas promocionais"
+      "schema": {
+        "type": "boolean",
+        "default": true,
+        "title": "Desconto cumulativo",
+        "description": "Se o desconto no boleto poderá ser aplicado junto a cupons e campanhas promocionais"
+      },
+      "hide": false
     },
     "banking_billet_options": {
       "schema": {
