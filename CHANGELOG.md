@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.1.1](https://github.com/ecomplus/app-paghiper/compare/v1.1.0...v1.1.1) (2020-09-17)
+
+
+### Bug Fixes
+
+* **admin-settings:** fix 'cumulative_discount' property ([dba14cb](https://github.com/ecomplus/app-paghiper/commit/dba14cb2f7fb63fcb5c28bcd91bde6d9cfbfa040))
+
 ## [1.1.0](https://github.com/ecomplus/app-paghiper/compare/v1.0.7...v1.1.0) (2020-09-15)
 
 
