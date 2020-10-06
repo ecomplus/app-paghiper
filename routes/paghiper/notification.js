@@ -87,6 +87,9 @@ module.exports = appSdk => {
               // https://atendimento.paghiper.com/hc/pt-br/articles/360016177713
               status = 'authorized'
               break
+            case 'completed':
+              status = 'paid'
+              break
 
             default:
               // ignore unknow status
