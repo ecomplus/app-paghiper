@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/ecomplus/app-paghiper/compare/v1.1.1...v1.2.0) (2020-12-22)
+
+
+### Features
+
+* **pix:** setup config options and create pix transaction ([5070df1](https://github.com/ecomplus/app-paghiper/commit/5070df1c153fbacbe930f744f4e9c864752e1c9f))
+* **pix:** setup paghiper pix notification handler ([93094ee](https://github.com/ecomplus/app-paghiper/commit/93094eed0f6ec4150d30af7245ef2615dc9ae061))
+
 ### [1.1.1](https://github.com/ecomplus/app-paghiper/compare/v1.1.0...v1.1.1) (2020-09-17)
 
 
