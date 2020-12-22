@@ -23,6 +23,7 @@ module.exports = appSdk => {
     // setup transaction body to PagHiper reference
     // https://dev.paghiper.com/reference#gerar-boleto
     const paghiperTransaction = parseTransactionBody(params)
+    paghiperTransaction.notification_url += '/pix'
 
     // use configured PagHiper API key
     paghiperTransaction.apiKey = config.paghiper_api_key
