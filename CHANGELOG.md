@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/ecomplus/app-paghiper/compare/v1.2.0...v1.3.0) (2020-12-22)
+
+
+### Features
+
+* **admin-settings:** add 'min_amount' config option ([#5](https://github.com/ecomplus/app-paghiper/issues/5)) ([70b2381](https://github.com/ecomplus/app-paghiper/commit/70b2381755fbfb1711b4e1c9b6d29d296ed615c8))
+
 ## [1.2.0](https://github.com/ecomplus/app-paghiper/compare/v1.1.1...v1.2.0) (2020-12-22)
 
 
