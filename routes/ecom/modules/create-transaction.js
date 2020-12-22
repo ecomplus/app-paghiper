@@ -65,7 +65,7 @@ module.exports = appSdk => {
           // https://dev.paghiper.com/reference#exemplos-pix
           const pixCode = createRequest.pix_code
           transaction.intermediator.transaction_code = pixCode.emv
-          const pixCodeUrls = ['pix_url', 'bacen_url', 'qrcode_image_url']
+          const pixCodeUrls = ['pix_url', 'qrcode_image_url', 'bacen_url']
           for (let i = 0; i < pixCodeUrls.length; i++) {
             const pixUrl = pixCode[pixCodeUrls[i]]
             if (pixUrl && pixUrl.startsWith('http')) {
