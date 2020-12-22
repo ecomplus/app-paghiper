@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.2](https://github.com/ecomplus/app-paghiper/compare/v1.3.1...v1.3.2) (2020-12-22)
+
+
+### Bug Fixes
+
+* **create-transaction:** fix seting transaction object on pix payment method ([889aa0b](https://github.com/ecomplus/app-paghiper/commit/889aa0b51d458216687c5801af0a837075774cf9))
+
 ### [1.3.1](https://github.com/ecomplus/app-paghiper/compare/v1.3.0...v1.3.1) (2020-12-22)
 
 
