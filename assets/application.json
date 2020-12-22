@@ -112,6 +112,16 @@
       },
       "hide": false
     },
+    "min_amount": {
+      "schema": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 999999999,
+        "description": "Valor mínimo para habilitar pagamentos via PagHiper",
+        "title": "Valor mínimo"
+      },
+      "hide": false
+    },
     "banking_billet_options": {
       "schema": {
         "type": "object",

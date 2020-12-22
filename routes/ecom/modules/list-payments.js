@@ -19,6 +19,9 @@ module.exports = appSdk => {
         message: 'PagHiper API key is unset on app hidden data (merchant must configure the app)'
       })
     }
+    if (config.min_amount > amount.total) {
+      return res.send({ payment_gateways: [] })
+    }
 
     // params object follows list payments request schema:
     // https://apx-mods.e-com.plus/api/v1/list_payments/schema.json?store_id=100
