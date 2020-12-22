@@ -75,9 +75,9 @@ module.exports = appSdk => {
             code: bankSlip.digitable_line,
             link: bankSlip.url_slip_pdf
           }
-        }
-        if (createRequest.due_date) {
-          transaction.banking_billet.valid_thru = new Date(createRequest.due_date).toISOString()
+          if (createRequest.due_date) {
+            transaction.banking_billet.valid_thru = new Date(createRequest.due_date).toISOString()
+          }
         }
 
         // all done
