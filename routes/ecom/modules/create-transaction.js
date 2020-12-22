@@ -38,31 +38,40 @@ module.exports = appSdk => {
     }
 
     // send request to PagHiper API
-    createTransaction(paghiperTransaction, storeId, orderId)
+    const isPix = params.payment_method === 'account_deposit'
+    createTransaction(paghiperTransaction, storeId, orderId, isPix)
 
-      .then(paghiperResponse => {
+      .then(createRequest => {
         // transaction created successfully
         // https://dev.paghiper.com/reference#exemplos
-        const createRequest = paghiperResponse.create_request
-        const bankSlip = createRequest.bank_slip
-
         // mount response body
         // https://apx-mods.e-com.plus/api/v1/create_transaction/response_schema.json?store_id=100
         const transaction = {
-          payment_link: bankSlip.url_slip,
           intermediator: {
             transaction_id: createRequest.transaction_id,
             transaction_code: createRequest.transaction_id,
             transaction_reference: createRequest.order_id
           },
-          banking_billet: {
-            code: bankSlip.digitable_line,
-            link: bankSlip.url_slip_pdf
-          },
           amount: createRequest.value_cents
             ? parseInt(createRequest.value_cents, 10) / 100
             // use amount from create transaction request body
             : params.amount.total
+        }
+
+        if (isPix) {
+          // https://dev.paghiper.com/reference#exemplos-pix
+          const pixCode = createRequest.pix_code
+          transaction.intermediator.transaction_code = pixCode.emv
+          transaction.payment_link = pixCode.pix_url
+          transaction.notes = `<img src="${transaction.qrcode_image_url}" ` +
+            'style="display:block;max-width:100%;margin:0 auto">'
+        } else {
+          const bankSlip = createRequest.bank_slip
+          transaction.payment_link = bankSlip.url_slip
+          transaction.banking_billet = {
+            code: bankSlip.digitable_line,
+            link: bankSlip.url_slip_pdf
+          }
         }
         if (createRequest.due_date) {
           transaction.banking_billet.valid_thru = new Date(createRequest.due_date).toISOString()

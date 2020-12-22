@@ -44,6 +44,21 @@ module.exports = appSdk => {
       payment_gateways: [ paymentGateway ]
     }
 
+    // https://dev.paghiper.com/reference#requisi%C3%A7%C3%A3o-para-cria%C3%A7%C3%A3o-de-pix
+    if (config.pix && config.pix.enable && (amount.total === undefined || amount.total >= 3)) {
+      delete config.pix.enable
+      response.payment_gateways.push({
+        ...paymentGateway,
+        payment_method: {
+          code: 'account_deposit',
+          name: 'Pix - PagHiper'
+        },
+        label: 'Pagar com Pix',
+        icon: 'https://us-central1-ecom-pix.cloudfunctions.net/app/pix.png',
+        ...config.pix
+      })
+    }
+
     const { discount } = paymentGateway
     if (discount && discount.value > 0) {
       if (discount.apply_at !== 'freight') {
