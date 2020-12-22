@@ -23,7 +23,10 @@ module.exports = appSdk => {
     // setup transaction body to PagHiper reference
     // https://dev.paghiper.com/reference#gerar-boleto
     const paghiperTransaction = parseTransactionBody(params)
-    paghiperTransaction.notification_url += '/pix'
+    const isPix = params.payment_method.code === 'account_deposit'
+    if (isPix) {
+      paghiperTransaction.notification_url += '/pix'
+    }
 
     // use configured PagHiper API key
     paghiperTransaction.apiKey = config.paghiper_api_key
@@ -39,7 +42,6 @@ module.exports = appSdk => {
     }
 
     // send request to PagHiper API
-    const isPix = params.payment_method === 'account_deposit'
     createTransaction(paghiperTransaction, storeId, orderId, isPix)
 
       .then(createRequest => {
