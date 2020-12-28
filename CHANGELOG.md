@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/ecomplus/app-paghiper/compare/v1.3.5...v1.4.0) (2020-12-28)
+
+
+### Features
+
+* **paghiper-transaction:** additional PAGHIPER_PIX_PARTNER_ID env for 'partners_id' ([8354f2e](https://github.com/ecomplus/app-paghiper/commit/8354f2e674f016205315ad4c4d40107b097750a5))
+
+
+### Bug Fixes
+
+* **list-payments:** fix unseting discount when min amount doesn't match ([e869c91](https://github.com/ecomplus/app-paghiper/commit/e869c91f40a0333fb2d0825157a052e5f1a841ac))
+
 ### [1.3.5](https://github.com/ecomplus/app-paghiper/compare/v1.3.4...v1.3.5) (2020-12-24)
 
 ### [1.3.4](https://github.com/ecomplus/app-paghiper/compare/v1.3.3...v1.3.4) (2020-12-22)
