@@ -80,7 +80,9 @@ module.exports = appSdk => {
       if (discount.hasOwnProperty('min_amount')) {
         // check amount value to apply discount
         if (amount.total < discount.min_amount) {
-          delete paymentGateway.discount
+          response.payment_gateways.forEach(paymentGateway => {
+            delete paymentGateway.discount
+          })
         } else {
           delete discount.min_amount
         }
