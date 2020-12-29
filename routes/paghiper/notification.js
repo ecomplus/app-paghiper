@@ -27,6 +27,7 @@ module.exports = appSdk => {
     if (!transactionCode) {
       return res.sendStatus(400)
     }
+    logger.log(`Paghiper notification for ${transactionCode}`)
 
     const handleNotification = isRetry => {
       // declare reusable Store API authentication object and Store ID
@@ -60,6 +61,9 @@ module.exports = appSdk => {
         })
 
         .then(({ orders, config }) => {
+          orders.forEach(({ _id }) => {
+            logger.log(`#${storeId} ${_id} reading PagHiper notification`)
+          })
           // read full notification body from PagHiper API
           return readNotification(Object.assign({}, body, {
             token: config.paghiper_token
