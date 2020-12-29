@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.2](https://github.com/ecomplus/app-paghiper/compare/v1.4.1...v1.4.2) (2020-12-29)
+
+
+### Bug Fixes
+
+* **paghiper-notification:** prefer matching orders by 'transaction_id' ([07b8bad](https://github.com/ecomplus/app-paghiper/commit/07b8badc68e6dcfbffe31d199022ffee19bb5b60))
+
 ### [1.4.1](https://github.com/ecomplus/app-paghiper/compare/v1.4.0...v1.4.1) (2020-12-29)
 
 
