@@ -51,10 +51,12 @@ ecomAuth.then(appSdk => {
     // routes for E-Com Plus Store API
     '/ecom/auth-callback',
     '/ecom/modules/create-transaction',
-    '/ecom/modules/list-payments',
-    // additional routes for PagHiper API
-    '/paghiper/notification'
+    '/ecom/modules/list-payments'
   ].forEach(route => router.post(route, require(`${routes}${route}`)(appSdk)))
+
+  // additional routes for PagHiper API
+  const route = '/paghiper/notification'
+  router.post(`${route}/:pix?`, require(`${routes}${route}`)(appSdk))
 
   // add router and start web server
   app.use(router)

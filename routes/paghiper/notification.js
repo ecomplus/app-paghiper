@@ -19,7 +19,8 @@ const CLIENT_ERR = 'invalidClient'
 
 module.exports = appSdk => {
   return (req, res) => {
-    const { body, isPix } = req
+    const { body } = req
+    const isPix = Boolean(req.params.pix)
     // handle PagHiper notification request
     // https://dev.paghiper.com/reference#qq
     const transactionCode = (body && body.transaction_id)
