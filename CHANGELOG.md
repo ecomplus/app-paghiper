@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/ecomplus/app-paghiper/compare/v1.4.2...v1.5.0) (2021-01-18)
+
+
+### Features
+
+* **list-payments:** add/handle pix specific discount object ([#9](https://github.com/ecomplus/app-paghiper/issues/9)) ([33cc210](https://github.com/ecomplus/app-paghiper/commit/33cc210388c502d35a16a4ab0bfcaff0680a5dc7))
+
 ### [1.4.2](https://github.com/ecomplus/app-paghiper/compare/v1.4.1...v1.4.2) (2020-12-29)
 
 
