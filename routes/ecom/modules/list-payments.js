@@ -34,14 +34,11 @@ module.exports = appSdk => {
     // https://apx-mods.e-com.plus/api/v1/list_payments/response_schema.json?store_id=100
     let paymentGateway = newPaymentGateway(params.lang)
     // merge cunfigured options to payment gateway object
-    ;['label', 'text', 'icon'].forEach(prop => {
+    ;['label', 'text', 'icon', 'discount'].forEach(prop => {
       if (config[prop]) {
         paymentGateway[prop] = config[prop]
       }
     })
-    if (config.discount && (!amount.discount || config.cumulative_discount !== false)) {
-      paymentGateway.discount = config.discount
-    }
     // setup response object
     let response = {
       payment_gateways: [ paymentGateway ]
@@ -62,32 +59,33 @@ module.exports = appSdk => {
       })
     }
 
-    const { discount } = paymentGateway
-    if (discount && discount.value > 0) {
-      if (discount.apply_at !== 'freight') {
-        // default discount option
-        const { value } = discount
-        const label = config.discount_option_label || paymentGateway.label
-        response.discount_option = { label, value }
-        // specify the discount type and min amount is optional
-        ;[ 'type', 'min_amount' ].forEach(prop => {
-          if (discount[prop]) {
-            response.discount_option[prop] = discount[prop]
-          }
-        })
-      }
+    response.payment_gateways.forEach(paymentGateway => {
+      const { discount } = paymentGateway
+      if (discount && discount.value > 0) {
+        if (amount.discount && config.cumulative_discount === false) {
+          // can't offer cumulative discount
+          delete paymentGateway.discount
+          return
+        }
 
-      if (discount.hasOwnProperty('min_amount')) {
-        // check amount value to apply discount
-        if (amount.total < discount.min_amount) {
-          response.payment_gateways.forEach(paymentGateway => {
+        if (discount.apply_at !== 'freight') {
+          // default discount option
+          response.discount_option = {
+            label: config.discount_option_label || paymentGateway.label,
+            ...discount
+          }
+        }
+
+        if (discount.hasOwnProperty('min_amount')) {
+          // check amount value to apply discount
+          if (amount.total < discount.min_amount) {
             delete paymentGateway.discount
-          })
-        } else {
-          delete discount.min_amount
+          } else {
+            delete discount.min_amount
+          }
         }
       }
-    }
+    })
 
     res.send(response)
   }
