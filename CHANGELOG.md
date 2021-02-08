@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/ecomplus/app-paghiper/compare/v1.5.0...v1.6.0) (2021-02-08)
+
+
+### Features
+
+* **admin-settings:** add 'disable_billet' bool option ([#10](https://github.com/ecomplus/app-paghiper/issues/10)) ([fadad57](https://github.com/ecomplus/app-paghiper/commit/fadad57140581b068f6db9be6cf4413f5c1808f0))
+
+
+### Bug Fixes
+
+* **list-payments:** prevent returning invalid discount object ([0bf698a](https://github.com/ecomplus/app-paghiper/commit/0bf698a9b0dde5e8ab9f2cada61f9b7d04c0ae95))
+
 ## [1.5.0](https://github.com/ecomplus/app-paghiper/compare/v1.4.2...v1.5.0) (2021-01-18)
 
 
