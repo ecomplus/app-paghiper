@@ -41,12 +41,16 @@ module.exports = appSdk => {
     })
     // setup response object
     let response = {
-      payment_gateways: [ paymentGateway ]
+      payment_gateways: []
+    }
+    if (!config.pix || !config.pix.disable_billet) {
+      response.payment_gateways.push(paymentGateway)
     }
 
     // https://dev.paghiper.com/reference#requisi%C3%A7%C3%A3o-para-cria%C3%A7%C3%A3o-de-pix
     if (config.pix && config.pix.enable && (amount.total === undefined || amount.total >= 3)) {
       delete config.pix.enable
+      delete config.pix.disable_billet
       response.payment_gateways.push({
         ...paymentGateway,
         payment_method: {
@@ -61,28 +65,32 @@ module.exports = appSdk => {
 
     response.payment_gateways.forEach(paymentGateway => {
       const { discount } = paymentGateway
-      if (discount && discount.value > 0) {
-        if (amount.discount && config.cumulative_discount === false) {
-          // can't offer cumulative discount
-          delete paymentGateway.discount
-          return
-        }
-
-        if (discount.apply_at !== 'freight') {
-          // default discount option
-          response.discount_option = {
-            label: config.discount_option_label || paymentGateway.label,
-            ...discount
-          }
-        }
-
-        if (discount.hasOwnProperty('min_amount')) {
-          // check amount value to apply discount
-          if (amount.total < discount.min_amount) {
+      if (discount) {
+        if (discount.value > 0) {
+          if (amount.discount && config.cumulative_discount === false) {
+            // can't offer cumulative discount
             delete paymentGateway.discount
-          } else {
-            delete discount.min_amount
+            return
           }
+
+          if (discount.apply_at !== 'freight') {
+            // default discount option
+            response.discount_option = {
+              label: config.discount_option_label || paymentGateway.label,
+              ...discount
+            }
+          }
+
+          if (discount.hasOwnProperty('min_amount')) {
+            // check amount value to apply discount
+            if (amount.total < discount.min_amount) {
+              delete paymentGateway.discount
+            } else {
+              delete discount.min_amount
+            }
+          }
+        } else if (typeof discount.value !== 'number' || isNaN(discount.value)) {
+          delete paymentGateway.discount
         }
       }
     })
