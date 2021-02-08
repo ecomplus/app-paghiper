@@ -192,6 +192,12 @@
             "title": "Pagamento via Pix",
             "description": "Habilitar Pix direto via PagHiper"
           },
+          "disable_billet": {
+            "type": "boolean",
+            "default": false,
+            "title": "Desabilitar boleto",
+            "description": "Usar apenas Pix direto via PagHiper"
+          },
           "label": {
             "type": "string",
             "maxLength": 50,
