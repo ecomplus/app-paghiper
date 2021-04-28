@@ -101,8 +101,27 @@ module.exports = appSdk => {
           // change transaction status on E-Com Plus API
           const notificationCode = body.notification_id
           const promises = []
-          orders.forEach(order => {
-            promises.push(updatePaymentStatus(sdkClient, order._id, status, notificationCode))
+          orders.forEach(({ _id, transactions }) => {
+            let transactionId
+            if (transactions) {
+              for (let i = 0; i < transactions.length; i++) {
+                const transaction = transactions[i]
+                const { intermediator } = transaction
+                if (intermediator && intermediator.transaction_id === String(transactionCode)) {
+                  if (transaction.status) {
+                    if (
+                      transaction.status.current === status ||
+                      (status === 'pending' && transaction.status.current === 'paid')
+                    ) {
+                      // ignore old/duplicated notification
+                      return
+                    }
+                  }
+                  transactionId = transaction._id
+                }
+              }
+            }
+            promises.push(updatePaymentStatus(sdkClient, _id, status, notificationCode, transactionId))
           })
           return Promise.all(promises)
         })
