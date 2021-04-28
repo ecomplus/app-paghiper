@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.7.0](https://github.com/ecomplus/app-paghiper/compare/v1.6.0...v1.7.0) (2021-04-28)
+
+
+### Features
+
+* **update-payment-status:** set 'transaction_id' when available ([6f548fb](https://github.com/ecomplus/app-paghiper/commit/6f548fba41eb123c068cc55d8259576c84f27fe7))
+
+
+### Bug Fixes
+
+* **deps:** update @ecomplus/application-sdk v1.14.8 ([0038899](https://github.com/ecomplus/app-paghiper/commit/00388999df01996406f0027434d56233a3978497))
+* **paghiper-notification:** check current status and ignore old/duplicated notification ([542f2c4](https://github.com/ecomplus/app-paghiper/commit/542f2c489b36bc08f3ad308d150dfce3250a50b9))
+
 ## [1.6.0](https://github.com/ecomplus/app-paghiper/compare/v1.5.0...v1.6.0) (2021-02-08)
 
 
