@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.1](https://github.com/ecomplus/app-paghiper/compare/v1.7.0...v1.7.1) (2021-05-10)
+
+
+### Bug Fixes
+
+* **deps:** update dev deps and non-major production dependencies ([a950f9d](https://github.com/ecomplus/app-paghiper/commit/a950f9dfac2c72e2f7f0e8fedca4e97f9b8209fc))
+
 ## [1.7.0](https://github.com/ecomplus/app-paghiper/compare/v1.6.0...v1.7.0) (2021-04-28)
 
 
