@@ -75,6 +75,7 @@ module.exports = appSdk => {
           // we have full PagHiper notification object here
           // parse PagHiper status to E-Com Plus financial status
           let { status } = paghiperResponse.status_request
+          logger.log(`PagHiper ${transactionCode} -> '${status}'`)
           switch (status) {
             case 'pending':
             case 'paid':
