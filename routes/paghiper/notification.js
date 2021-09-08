@@ -135,30 +135,32 @@ module.exports = appSdk => {
         })
 
         .catch(err => {
-          const { message } = err
+          const { message, response } = err
           let statusCode
           if (!err.request && err.name !== CLIENT_ERR && err.code !== 'EMPTY') {
             // not Axios error ?
             logger.error(err)
             statusCode = 500
           } else {
+            const resStatus = response && response.status
             let debugMsg = `[#${storeId} / ${transactionCode}] Unhandled notification: `
             if (err.config) {
               debugMsg += `${err.config.url} `
             }
-            if (err.response) {
-              debugMsg += err.response.status
-            } else {
-              debugMsg += message
-            }
-            logger.log(debugMsg)
-            statusCode = 409
+            debugMsg += (resStatus || message)
 
-            if (!isRetry && (!err.response || !err.response.status || err.response.status >= 500)) {
+            if (
+              !isRetry &&
+              ((resStatus === 401 && response.data && response.data.error_code === 132) || resStatus >= 500)
+            ) {
               // delay and retry once
               setTimeout(() => {
                 handleNotification(true)
               }, 7000)
+              statusCode = 503
+            } else {
+              logger.log(debugMsg)
+              statusCode = 409
             }
           }
 
