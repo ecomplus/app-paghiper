@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.2](https://github.com/ecomplus/app-paghiper/compare/v1.7.1...v1.7.2) (2021-09-08)
+
+
+### Bug Fixes
+
+* **deps:** update @ecomplus/application-sdk to v1.15.4 ([798e28e](https://github.com/ecomplus/app-paghiper/commit/798e28e12675893878752a938437cbd84528a39f))
+* **paghiper-notification:** also handle internal retry for 401 token expired [[#12](https://github.com/ecomplus/app-paghiper/issues/12)] ([0ea3a66](https://github.com/ecomplus/app-paghiper/commit/0ea3a660dfd1b6a332e4087880ffa22f8b99a7df))
+
 ### [1.7.1](https://github.com/ecomplus/app-paghiper/compare/v1.7.0...v1.7.1) (2021-05-10)
 
 
