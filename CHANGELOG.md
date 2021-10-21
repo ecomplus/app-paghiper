@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.3](https://github.com/ecomplus/app-paghiper/compare/v1.7.2...v1.7.3) (2021-10-21)
+
+
+### Bug Fixes
+
+* **deps:** update @ecomplus/application-sdk to v1.15.5 sqlite ([3dc8a97](https://github.com/ecomplus/app-paghiper/commit/3dc8a9773926974d3cb28f4cc7954a3f9841de02))
+
 ### [1.7.2](https://github.com/ecomplus/app-paghiper/compare/v1.7.1...v1.7.2) (2021-09-08)
 
 
