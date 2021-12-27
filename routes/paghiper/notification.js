@@ -13,7 +13,7 @@ const listOrdersByTransaction = require(process.cwd() + '/lib/store-api/list-ord
 // read full notification body from PagHiper API
 const readNotification = require(process.cwd() + '/lib/paghiper-api/read-notification')
 // get intermediator object from payment gateway object
-const { intermediator } = require(process.cwd() + '/lib/new-payment-gateway')()
+const intermediatorCode = require(process.cwd() + '/lib/new-payment-gateway')().intermediator.code
 
 const CLIENT_ERR = 'invalidClient'
 
@@ -51,7 +51,7 @@ module.exports = appSdk => {
         .then(config => {
           if (config.paghiper_token && config.paghiper_api_key === body.apiKey) {
             // list order IDs for respective transaction code
-            return listOrdersByTransaction(sdkClient, transactionCode, intermediator.code)
+            return listOrdersByTransaction(sdkClient, transactionCode)
               .then(orders => ({ orders, config }))
           } else {
             const err = new Error('API key does not match')
@@ -107,7 +107,7 @@ module.exports = appSdk => {
             if (transactions) {
               for (let i = 0; i < transactions.length; i++) {
                 const transaction = transactions[i]
-                const { intermediator } = transaction
+                const { app, intermediator } = transaction
                 if (intermediator && intermediator.transaction_id === String(transactionCode)) {
                   if (transaction.status) {
                     if (
@@ -117,6 +117,9 @@ module.exports = appSdk => {
                       // ignore old/duplicated notification
                       return
                     }
+                  }
+                  if (app && app.intermediator && app.intermediator.code !== intermediatorCode) {
+                    return
                   }
                   transactionId = transaction._id
                 }
