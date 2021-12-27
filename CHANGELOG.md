@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.7.4](https://github.com/ecomplus/app-paghiper/compare/v1.7.3...v1.7.4) (2021-12-27)
+
+
+### Bug Fixes
+
+* **paghiper-notification:** list orders by transaction with intermediator code optional only ([c99234a](https://github.com/ecomplus/app-paghiper/commit/c99234acb578b352816d2f98d8e106a73e6d6d27))
+
 ### [1.7.3](https://github.com/ecomplus/app-paghiper/compare/v1.7.2...v1.7.3) (2021-10-21)
 
 
