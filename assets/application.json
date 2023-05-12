@@ -198,6 +198,14 @@
             "title": "Desabilitar boleto",
             "description": "Usar apenas Pix direto via PagHiper"
           },
+          "days_due_date": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 400,
+            "title": "Dias corridos até o vencimento",
+            "description": "Representa diferença de dias entre a data da requisição e a data de vencimento",
+            "default": 5
+          },
           "label": {
             "type": "string",
             "maxLength": 50,
