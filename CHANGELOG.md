@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.8.0](https://github.com/ecomplus/app-paghiper/compare/v1.7.4...v1.8.0) (2024-02-02)
+
+
+### Features
+
+* new settings option to insert valid thru for pix ([#13](https://github.com/ecomplus/app-paghiper/issues/13)) ([96ff94e](https://github.com/ecomplus/app-paghiper/commit/96ff94e284ef9538c22be970630c0905beb1f4ca))
+
+
+### Bug Fixes
+
+* **create-transaction:** avoid create order with zero items ([#14](https://github.com/ecomplus/app-paghiper/issues/14)) ([8027e7c](https://github.com/ecomplus/app-paghiper/commit/8027e7cae82ec085aa3e8d33cad85fe59a08dd94))
+
 ### [1.7.4](https://github.com/ecomplus/app-paghiper/compare/v1.7.3...v1.7.4) (2021-12-27)
 
 
