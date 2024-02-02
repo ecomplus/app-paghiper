@@ -26,6 +26,9 @@ module.exports = appSdk => {
     const isPix = params.payment_method.code === 'account_deposit'
     if (isPix) {
       paghiperTransaction.notification_url += '/pix'
+      if (config.pix.days_due_date) {
+        paghiperTransaction.days_due_date = config.pix.days_due_date
+      }
     }
 
     // use configured PagHiper API key
@@ -73,6 +76,9 @@ module.exports = appSdk => {
               transaction.payment_link = pixUrl
               break
             }
+          }
+          if (createRequest.due_date) {
+            transaction.account_deposit.valid_thru = new Date(createRequest.due_date).toISOString()
           }
           transaction.notes = `<img src="${pixCode.qrcode_image_url}" ` +
             'style="display:block;max-width:100%;margin:0 auto">'
