@@ -41,8 +41,9 @@ module.exports = appSdk => {
       }
     }
 
-    // send request to PagHiper API
-    createTransaction(paghiperTransaction, storeId, orderId, isPix)
+    if (paghiperTransaction.items && paghiperTransaction.items.length) {
+      // send request to PagHiper API
+      createTransaction(paghiperTransaction, storeId, orderId, isPix)
 
       .then(createRequest => {
         // transaction created successfully
@@ -133,5 +134,13 @@ module.exports = appSdk => {
           message
         })
       })
+    } else {
+      // return error status code
+      res.status(409)
+      res.send({
+        error: 'CREATE_TRANSACTION_ERR',
+        message: 'Doesnt have items in order'
+      })
+    }
   }
 }
