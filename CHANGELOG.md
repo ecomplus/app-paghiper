@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.8.1](https://github.com/ecomplus/app-paghiper/compare/v1.8.0...v1.8.1) (2024-02-03)
+
+
+### Bug Fixes
+
+* **create-transaction:** send valid thru as new object ([860ab86](https://github.com/ecomplus/app-paghiper/commit/860ab86d10ba6fcee95aad40ccf28492636557fd))
+
 ## [1.8.0](https://github.com/ecomplus/app-paghiper/compare/v1.7.4...v1.8.0) (2024-02-02)
 
 
