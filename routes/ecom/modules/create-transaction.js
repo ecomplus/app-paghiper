@@ -78,7 +78,9 @@ module.exports = appSdk => {
             }
           }
           if (createRequest.due_date) {
-            transaction.account_deposit.valid_thru = new Date(createRequest.due_date).toISOString()
+            transaction.account_deposit = {
+              valid_thru: new Date(createRequest.due_date).toISOString()
+            }
           }
           transaction.notes = `<img src="${pixCode.qrcode_image_url}" ` +
             'style="display:block;max-width:100%;margin:0 auto">'
