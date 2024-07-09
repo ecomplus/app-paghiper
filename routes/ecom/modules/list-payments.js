@@ -3,12 +3,40 @@
 // generate default payment gateway object
 const newPaymentGateway = require(process.cwd() + '/lib/new-payment-gateway')
 
+const checkDiscount = (paymentGateway, items) => {
+  const discount = paymentGateway.discount
+  const productIds = discount?.product_ids
+  if (items && items.length) {
+    if (discount.apply_at !== 'freight' && discount.value > 0 && productIds && productIds.length) {
+      let discountValue = 0
+      items.forEach(item => {
+        if (productIds.includes(item.product_id)) {
+          discountValue += (item.quantity) * (item.final_price || item.price)
+        }
+      })
+      if (discountValue && discount.type === 'percentage') {
+        discountValue *= discount.value / 100
+        const newDiscount = {
+          apply_at: discount.apply_at,
+          value: discountValue,
+          type: 'fixed'
+        }
+        paymentGateway.discount = newDiscount
+      }
+    }
+  } else if (productIds && productIds.length) {
+    // because the discount is not valid for all products and it is not good to use this discount in the showcase
+    delete paymentGateway.discount
+  }
+}
+
 module.exports = appSdk => {
   return (req, res) => {
     // body was already pre-validated on @/bin/web.js
     // treat module request body
     const { params, application } = req.body
     const amount = params.amount || {}
+    const items = params.items
 
     // app configured options
     const config = Object.assign({}, application.data, application.hidden_data)
@@ -44,6 +72,7 @@ module.exports = appSdk => {
       payment_gateways: []
     }
     if (!config.pix || !config.pix.disable_billet) {
+      checkDiscount(paymentGateway, items)
       response.payment_gateways.push(paymentGateway)
     }
 
@@ -51,7 +80,7 @@ module.exports = appSdk => {
     if (config.pix && config.pix.enable && (amount.total === undefined || amount.total >= 3)) {
       delete config.pix.enable
       delete config.pix.disable_billet
-      response.payment_gateways.push({
+      const pixPayment = {
         ...paymentGateway,
         payment_method: {
           code: 'account_deposit',
@@ -60,7 +89,9 @@ module.exports = appSdk => {
         label: 'Pagar com Pix',
         icon: 'https://us-central1-ecom-pix.cloudfunctions.net/app/pix.png',
         ...config.pix
-      })
+      }
+      checkDiscount(pixPayment, items)
+      response.payment_gateways.push(pixPayment)
     }
 
     response.payment_gateways.forEach(paymentGateway => {

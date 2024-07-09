@@ -96,6 +96,16 @@
             "maximum": 99999999,
             "title": "Valor do desconto",
             "description": "Valor percentual ou fixo a ser descontado, dependendo to tipo configurado"
+          },
+          "product_ids": {
+            "title": "Lista de produtos para aplicar desconto",
+            "description": "Se preenchido, desconto será aplicado apenas nos produtos da lista",
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{24}$",
+              "title": "ID do produto"
+            }
           }
         },
         "title": "Desconto",
@@ -267,7 +277,17 @@
                 "minimum": -99999999,
                 "maximum": 99999999,
                 "title": "Valor do desconto",
-                "description": "Valor percentual ou fixo a ser descontado, dependendo to tipo configurado"
+                "description": "Valor percentual ou fixo a ser descontado, dependendo do tipo configurado"
+              },
+              "product_ids": {
+                "title": "Lista de produtos para aplicar desconto",
+                "description": "Se preenchido, desconto será aplicado apenas nos produtos da lista",
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{24}$",
+                  "title": "ID do produto"
+                }
               }
             },
             "title": "Desconto via Pix",
