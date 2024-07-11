@@ -3,7 +3,7 @@
 // generate default payment gateway object
 const newPaymentGateway = require(process.cwd() + '/lib/new-payment-gateway')
 
-const checkDiscountIitems = (paymentGateway, items) => {
+const checkDiscountItems = (paymentGateway, items) => {
   const discount = paymentGateway.discount
   const productIds = discount && discount.product_ids
 
@@ -75,7 +75,7 @@ module.exports = appSdk => {
       payment_gateways: []
     }
     if (!config.pix || !config.pix.disable_billet) {
-      checkDiscountIitems(paymentGateway, items)
+      checkDiscountItems(paymentGateway, items)
       response.payment_gateways.push(paymentGateway)
     }
 
@@ -93,7 +93,7 @@ module.exports = appSdk => {
         icon: 'https://us-central1-ecom-pix.cloudfunctions.net/app/pix.png',
         ...config.pix
       }
-      checkDiscountIitems(pixPayment, items)
+      checkDiscountItems(pixPayment, items)
       response.payment_gateways.push(pixPayment)
     }
 
