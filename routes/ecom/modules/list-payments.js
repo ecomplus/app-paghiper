@@ -3,18 +3,21 @@
 // generate default payment gateway object
 const newPaymentGateway = require(process.cwd() + '/lib/new-payment-gateway')
 
-const checkDiscount = (paymentGateway, items) => {
+const checkDiscountIitems = (paymentGateway, items) => {
   const discount = paymentGateway.discount
-  const productIds = discount?.product_ids
+  const productIds = discount && discount.product_ids
+
+  if (!productIds || !productIds.length) return
+
   if (items && items.length) {
-    if (discount.apply_at !== 'freight' && discount.value > 0 && productIds && productIds.length) {
+    if (discount.apply_at === 'subtotal' && discount.type === 'percentage' && discount.value > 0) {
       let discountValue = 0
       items.forEach(item => {
         if (productIds.includes(item.product_id)) {
           discountValue += (item.quantity) * (item.final_price || item.price)
         }
       })
-      if (discountValue && discount.type === 'percentage') {
+      if (discountValue) {
         discountValue *= discount.value / 100
         const newDiscount = {
           apply_at: discount.apply_at,
@@ -36,7 +39,7 @@ module.exports = appSdk => {
     // treat module request body
     const { params, application } = req.body
     const amount = params.amount || {}
-    const items = params.items
+    const items = params.items || []
 
     // app configured options
     const config = Object.assign({}, application.data, application.hidden_data)
@@ -72,7 +75,7 @@ module.exports = appSdk => {
       payment_gateways: []
     }
     if (!config.pix || !config.pix.disable_billet) {
-      checkDiscount(paymentGateway, items)
+      checkDiscountIitems(paymentGateway, items)
       response.payment_gateways.push(paymentGateway)
     }
 
@@ -90,7 +93,7 @@ module.exports = appSdk => {
         icon: 'https://us-central1-ecom-pix.cloudfunctions.net/app/pix.png',
         ...config.pix
       }
-      checkDiscount(pixPayment, items)
+      checkDiscountIitems(pixPayment, items)
       response.payment_gateways.push(pixPayment)
     }
 
