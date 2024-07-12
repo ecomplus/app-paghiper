@@ -10,14 +10,19 @@ const checkDiscountItems = (paymentGateway, items) => {
   if (!productIds || !productIds.length) return
 
   if (items && items.length) {
-    if (discount.apply_at === 'subtotal' && discount.type === 'percentage' && discount.value > 0) {
-      let discountValue = 0
-      items.forEach(item => {
-        if (productIds.includes(item.product_id)) {
-          discountValue += (item.quantity) * (item.final_price || item.price)
-        }
-      })
-      if (discountValue) {
+    let isWitoutDiscountItem = false
+    let discountValue = 0
+
+    items.forEach(item => {
+      if (productIds.includes(item.product_id)) {
+        discountValue += (item.quantity) * (item.final_price || item.price)
+      } else {
+        isWitoutDiscountItem = true
+      }
+    })
+
+    if (discountValue) {
+      if (discount.apply_at === 'subtotal' && discount.type === 'percentage' && discount.value > 0 && isWitoutDiscountItem) {
         discountValue *= discount.value / 100
         const newDiscount = {
           apply_at: discount.apply_at,
@@ -26,11 +31,12 @@ const checkDiscountItems = (paymentGateway, items) => {
         }
         paymentGateway.discount = newDiscount
       }
+
+      return
     }
-  } else if (productIds && productIds.length) {
-    // because the discount is not valid for all products and it is not good to use this discount in the showcase
-    delete paymentGateway.discount
   }
+  // because the discount is not valid for all products and it is not good to use this discount in the showcase
+  delete paymentGateway.discount
 }
 
 module.exports = appSdk => {
