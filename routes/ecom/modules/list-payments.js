@@ -22,7 +22,7 @@ const checkDiscountItems = (paymentGateway, items) => {
     })
 
     if (discountValue) {
-      if (discount.apply_at === 'subtotal' && discount.type === 'percentage' && discount.value > 0 && isWitoutDiscountItem) {
+      if (discount.apply_at === 'subtotal' && discount.type === 'percentage' && discount.value > 0) {
         discountValue *= discount.value / 100
         const newDiscount = {
           apply_at: discount.apply_at,
@@ -30,6 +30,8 @@ const checkDiscountItems = (paymentGateway, items) => {
           type: 'fixed'
         }
         paymentGateway.discount = newDiscount
+      } else if (isWitoutDiscountItem) {
+        delete paymentGateway.discount
       }
 
       return
